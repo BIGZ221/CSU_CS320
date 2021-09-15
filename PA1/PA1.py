@@ -108,14 +108,13 @@ def fast(image,h,angle, N, shade):
         maxHeight = row[0]
         maxIdx = 0
         for colIdx, col in enumerate(row):
-            if col > maxHeight:
+            if colIdx == 0:
+                continue
+            if compare((col + (h*colIdx*tanTheta)), (maxHeight + (h*maxIdx*tanTheta))):
+                shade[rowIdx][colIdx] = True
+            if (col + (h * colIdx * tanTheta)) >= (maxHeight + (h * maxIdx * tanTheta)):
                 maxHeight = col
                 maxIdx = colIdx
-            # sunny if col + (h*colIdx*tanTheta) >= maxHeight + h*maxIdx*tanTheta is true
-            # shade if col + (h*colIdx*tanTheta) < maxHeight + h*maxIdx*tanTheta is true
-            # can get this from negating the first since !< == >=
-            if compare(col + (h*colIdx*tanTheta), maxHeight + h*maxIdx*tanTheta):
-                shade[rowIdx][colIdx] = True
 ###### Complete this function
     
     return shade
