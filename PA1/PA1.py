@@ -112,7 +112,7 @@ def fast(image,h,angle, N, shade):
                 continue
             if compare((col + (h*colIdx*tanTheta)), (maxHeight + (h*maxIdx*tanTheta))):
                 shade[rowIdx][colIdx] = True
-            if (col + (h * colIdx * tanTheta)) >= (maxHeight + (h * maxIdx * tanTheta)):
+            else:
                 maxHeight = col
                 maxIdx = colIdx
 ###### Complete this function
