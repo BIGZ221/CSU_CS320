@@ -38,7 +38,7 @@ def buildHuffmanTree(huffmanHeap):
       min2 = heapq.heappop(huffmanTree)
       sum = min1[0] + min2[0]
       heapq.heappush(huffmanTree, PriorityTuple((sum, (min2, min1))))
-    return huffmanTree
+    return huffmanTree[0]
 
 def buildHuffmanHeap(frequencies):
     huffmanHeap = []
@@ -47,24 +47,27 @@ def buildHuffmanHeap(frequencies):
       heapq.heappush(huffmanHeap, PriorityTuple((value, key)))
     return huffmanHeap
 
-def getHuffmanCode(huffmanTree):
+def getHuffmanCode(huffmanTree, code=""):
     huffmanCodes = {}
     freq = huffmanTree[0]
     left = huffmanTree[1][0]
     right = huffmanTree[1][1]
-    if type(right) == "string":
-      huffmanCodes[right] = freq
-    print(huffmanTree)
-    # huffmanCodes.update(getHuffmanCode(huffmanTree[0]))
-    # huffmanCodes.update(getHuffmanCode(huffmanTree[1]))
+    if isinstance(left[1], str):
+      huffmanCodes[left[1]] = code + "0"
+    else:
+      huffmanCodes.update(getHuffmanCode(left, code + "0"))
+    if isinstance(right[1], str):
+      huffmanCodes[right[1]] = code + "1"
+    else:
+      huffmanCodes.update(getHuffmanCode(right, code + "1"))
+    return huffmanCodes
 
 
 def huffman_codes_from_frequencies(frequencies):
-    code = ""
     huffmanHeap = buildHuffmanHeap(frequencies)
     huffmanTree = buildHuffmanTree(huffmanHeap)
     huffmanCode = getHuffmanCode(huffmanTree)
-    return huffmanHeap
+    return huffmanCode
 
 def huffman_letter_codes_from_file_contents(file_name):
     """WE WILL GRADE BASED ON THIS FUNCTION."""
@@ -108,6 +111,8 @@ def main():
     frequencies = file_character_frequencies(sys.argv[1])
     pprint.pprint(frequencies)
     codes = huffman_codes_from_frequencies(frequencies)
+    encode_file_using_codes("example.txt", codes)
+    decode_file_using_codes("example.txt_encoded", codes)
     pprint.pprint(codes)
 
 
