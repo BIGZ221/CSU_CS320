@@ -107,13 +107,9 @@ def decode_file_using_codes(file_name_encoded, letter_codes):
 
 def main():
     """Provided to help you play with your code."""
-    import pprint
-    frequencies = file_character_frequencies(sys.argv[1])
-    pprint.pprint(frequencies)
-    codes = huffman_codes_from_frequencies(frequencies)
-    encode_file_using_codes("example.txt", codes)
-    decode_file_using_codes("example.txt_encoded", codes)
-    pprint.pprint(codes)
+    codes = huffman_letter_codes_from_file_contents(sys.argv[1])
+    encode_file_using_codes(sys.argv[1], codes)
+    decode_file_using_codes(sys.argv[1]+"_encoded", codes)
 
 
 if __name__ == '__main__':
