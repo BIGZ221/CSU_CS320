@@ -23,9 +23,9 @@ def count_inversions(in_list):
   list_length = len(in_list)
   if list_length <= 1:
     return 0
-  left_list = in_list[:list_length//2]
-  right_list = in_list[list_length//2:]
-  in_list.clear()
+  mid = list_length//2
+  left_list = in_list[:mid]
+  right_list = in_list[mid:]
   left_inversions = count_inversions(left_list)
   right_inversions = count_inversions(right_list)
   total_inversions = merge_i(left_list, right_list, in_list)
@@ -40,15 +40,24 @@ def count_inversions(in_list):
 # Return value: inversion count
 def merge_i(l_list, r_list, in_list):
   inversions = 0
-  while l_list and r_list:
-    if l_list[0] > r_list[0]:
-      in_list.append(r_list.pop(0))
-      inversions += len(l_list)
+  merged_list = []
+  l = 0
+  r = 0
+  l_len = len(l_list)
+  r_len = len(r_list)
+  while l < l_len and r < r_len:
+    if l_list[l] > r_list[r]:
+      merged_list.append(r_list[r])
+      r += 1
+      inversions += l_len - l
     else:
-      in_list.append(l_list.pop(0))
-  in_list.extend(l_list)
-  in_list.extend(r_list)
-  in_list = []
+      merged_list.append(l_list[l])
+      l += 1
+  if len(l_list) != l:
+    merged_list.extend(l_list[l:])
+  elif len(r_list) != r:
+    merged_list.extend(r_list[r:])
+  in_list[0:len(merged_list)] = merged_list
   return inversions
 
 
